@@ -1,0 +1,6 @@
+﻿services:
+  freepository:
+    image: freepository
+    build:
+      context: .
+      dockerfile: Freepository/Dockerfile

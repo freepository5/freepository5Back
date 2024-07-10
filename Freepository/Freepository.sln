@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freepository", "Freepository\Freepository.csproj", "{F37679C6-7250-4E72-98E6-54C5A25AF5F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D2D82FA2-D3EF-4EF6-804C-C85B42D96634}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F37679C6-7250-4E72-98E6-54C5A25AF5F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F37679C6-7250-4E72-98E6-54C5A25AF5F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F37679C6-7250-4E72-98E6-54C5A25AF5F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F37679C6-7250-4E72-98E6-54C5A25AF5F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
