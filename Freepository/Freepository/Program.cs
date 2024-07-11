@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 
 using DefaultNamespace;
+using Freepository.Services;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IResourceService, ResourceService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Add services to the container.
@@ -26,8 +33,11 @@ if (builder.Environment.IsDevelopment())
     app.UseSwaggerUI();    
 }
 
+
 app.MapControllers();
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthorization();
 
 
 app.Run();
