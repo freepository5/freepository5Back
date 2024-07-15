@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using Freepository.Models;
 
 namespace Freepository.Repositories;
 

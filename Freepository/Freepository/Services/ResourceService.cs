@@ -1,6 +1,7 @@
 using AutoMapper;
 using DefaultNamespace;
 using Freepository.DTO_s;
+using Freepository.Models;
 using Freepository.Repositories;
 using NuGet.Common;
 

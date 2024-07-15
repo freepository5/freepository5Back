@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using Freepository.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Freepository.Repositories;
