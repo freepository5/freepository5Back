@@ -14,29 +14,29 @@ public class ResourceRepository : IResourceRepository
         _dbSet = _context.Set<Resource>();
     }
 
-    public async Task<IEnumerable<Resource>> GetAllResources()
+    public async Task<IEnumerable<Resource>> GetAll()
     {
         return await _dbSet.ToListAsync();
     }
 
-    public async Task<Resource> GetResourceById(int id)
+    public async Task<Resource> GetById(int id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task AddResource(Resource resource)
+    public async Task Add(Resource resource)
     {
         await _dbSet.AddAsync(resource);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateResource(Resource resource)
+    public async Task Update(Resource resource)
     {
         _context.Entry(resource).State = EntityState.Modified;
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteResource(int id)
+    public async Task Delete(int id)
     {
         var resource = await _dbSet.FindAsync(id);
         _dbSet.Remove(resource);

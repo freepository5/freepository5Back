@@ -4,10 +4,9 @@ namespace Freepository.Repositories;
 
 public interface IResourceRepository
 {
-    Task<IEnumerable<Resource>> GetAllResources();
-    Task<Resource> GetResourceById(int id);
-    Task AddResource(Resource resource);
-    Task UpdateResource(Resource resource);
-    Task DeleteResource(int id);
-    Task<bool> ResourceExists(int id);
+    Task<IEnumerable<Resource>> GetAll();
+    Task<Resource> GetById(int id);
+    Task Add(Resource resource);
+    Task Update(Resource resource);
+    Task Delete(int id);
 }

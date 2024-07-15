@@ -8,10 +8,10 @@ namespace Freepository.Services;
 
 public class ResourceService : IResourceService
 {
-    private readonly IResourceRepository<Resource> _resourceRepository;
+    private readonly IResourceRepository _resourceRepository;
     private readonly IMapper _mapper;
 
-    public ResourceService(IResourceRepository<Resource> resourceRepository, IMapper mapper)
+    public ResourceService(IResourceRepository resourceRepository, IMapper mapper)
     {
         _resourceRepository = resourceRepository;
         _mapper = mapper;
@@ -19,30 +19,30 @@ public class ResourceService : IResourceService
 
     public async Task<IEnumerable<ResourceDTO>> GetAllResources()
     {
-        var resources = await _resourceRepository.GetAllResources();
+        var resources = await _resourceRepository.GetAll();
         return _mapper.Map<IEnumerable<ResourceDTO>>(resources);
     }
 
     public async Task<ResourceDTO> GetResourceById(int id)
     {
-        var resource = await _resourceRepository.GetResourceById(id);
+        var resource = await _resourceRepository.GetById(id);
         return _mapper.Map<ResourceDTO>(resource);
     }
 
     public async Task AddResource(ResourceDTO resourceDto)
     {
         var resource = _mapper.Map<Resource>(resourceDto);
-        await _resourceRepository.AddResource(resource);
+        await _resourceRepository.Add(resource);
     }
 
     public async Task UpdateResource(ResourceDTO resourceDto)
     {
         var resource = _mapper.Map<Resource>(resourceDto);
-        await _resourceRepository.UpdateResource(resource);
+        await _resourceRepository.Update(resource);
     }
 
     public async Task DeleteResource(int id)
     {
-        await _resourceRepository.DeleteResource(id);
+        await _resourceRepository.Delete(id);
     }
 }
