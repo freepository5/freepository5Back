@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace;
+﻿namespace Freepository.Models;
 
 public class User
 {
