@@ -1,4 +1,7 @@
-﻿namespace Freepository.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+
+namespace Freepository.Models;
 
 public class User
 {
@@ -6,4 +9,7 @@ public class User
     public string Name { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+
+    public ICollection<Resource> Resources { get; set; } = [];
+
 }

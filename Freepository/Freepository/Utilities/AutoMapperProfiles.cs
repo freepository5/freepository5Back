@@ -11,6 +11,7 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<ResourceDTO, Resource>().ReverseMap();
+        CreateMap<CreateResourceDTO, Resource>();
         CreateMap<UserDTO, User>();
     }
 }
