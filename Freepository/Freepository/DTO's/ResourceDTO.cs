@@ -1,4 +1,4 @@
-﻿using DefaultNamespace;
+﻿using Freepository.Models;
 
 namespace Freepository.DTO_s;
 
@@ -8,5 +8,8 @@ public class ResourceDTO
     public string Title { get; set; } 
     public string Description { get; set; } 
     public string Url { get; set; }
-    public string Tags { get; set; }
+    public string UserId { get; set; }
+    // public User User { get; set; }
+    
+    // public ICollection<ResourceTag> ResourceTags { get; set; }
 }

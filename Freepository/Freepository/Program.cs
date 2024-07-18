@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-
-using DefaultNamespace;
+using Freepository;
+using Freepository.Data;
 using Freepository.Repositories;
-using Freepository.Services;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
+using Freepository.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using User = Freepository.Models.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,31 +16,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
-builder.Services.AddScoped<IResourceService, ResourceService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers();
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (builder.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();    
+    app.UseSwaggerUI();
 }
 
-
-app.MapControllers();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-
-
+app.MapControllers();
 app.Run();

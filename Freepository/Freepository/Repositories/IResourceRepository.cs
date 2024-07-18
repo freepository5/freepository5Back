@@ -1,13 +1,13 @@
-using DefaultNamespace;
+using Freepository.DTO_s;
 using Freepository.Models;
 
 namespace Freepository.Repositories;
 
 public interface IResourceRepository
 {
-    Task<IEnumerable<Resource>> GetAll();
-    Task<Resource> GetById(int id);
-    Task Add(Resource resource);
-    Task Update(Resource resource);
-    Task Delete(int id);
+    Task<IEnumerable<Resource>> GetAllResources();
+    Task<Resource> GetResourceById(int id);
+    Task AddResource(Resource resource);
+    Task UpdateResource(Resource resource);
+    Task DeleteResource(int id);
 }
