@@ -3,7 +3,6 @@ using Freepository.DTO_s;
 using Freepository.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
 using Freepository.Models;
 
 namespace Freepository.Controllers
