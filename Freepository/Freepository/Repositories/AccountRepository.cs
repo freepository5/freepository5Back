@@ -1,6 +1,9 @@
+using System.Security.Claims;
 using Freepository.DTO_s;
 using Microsoft.AspNetCore.Identity;
 using Freepository.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Freepository.Repositories;
 
@@ -41,6 +44,51 @@ public class AccountRepository : IAccountRepository
             }
         }
     }
+
+    public async Task<object> Register(RegisterDTO model)
+    {
+        var user = new User
+        {
+            UserName = model.Email,
+            Email = model.Email,
+            FirstName = string.IsNullOrWhiteSpace(model.FirstName) ? "" : model.FirstName,
+            LastName = string.IsNullOrWhiteSpace(model.LastName) ? "" : model.LastName
+        };
+
+        var result = await _userManager.CreateAsync(user, model.Password);
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, "user");
+            return new { message = "Usuario registrado correctamente" };
+        }
+        else
+        {
+            var errors = result.Errors.Select(e => e.Description);
+            return new { message = "Fallo al registrar el usuario", errors };
+        } 
+    }
+
+    private async Task SignInUserAsync(User user)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName),
+        };
+
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults. AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+        };
+
+        await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity), authProperties);
+    }
+    
+    
+    
 
     private object BuildLoginResponse(User user)
     {

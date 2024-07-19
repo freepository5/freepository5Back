@@ -6,7 +6,6 @@ using Freepository.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using User = Freepository.Models.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,16 +14,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     
 });
-builder.Services.AddIdentity<User>(options =>
+builder.Services.AddDefaultIdentity<User>(options =>
     {
 
     })
+    
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager<SignInManager<User>>()
     .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAuthenticatedUser", policy =>
+        policy.RequireAuthenticatedUser());
+});
+
 builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
