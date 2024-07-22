@@ -4,6 +4,7 @@ using Freepository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240719122541_Users")]
+    partial class Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,30 +45,17 @@ namespace Freepository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("Freepository.Models.ResourceTag", b =>
-                {
-                    b.Property<int>("ResourceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ResourceId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("ResourceTags");
                 });
 
             modelBuilder.Entity("Freepository.Models.Tag", b =>
@@ -295,34 +285,26 @@ namespace Freepository.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Freepository.Models.Resource", b =>
+            modelBuilder.Entity("ResourceTag", b =>
                 {
-                    b.HasOne("Freepository.Models.User", "User")
-                        .WithMany("Resources")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("ResourcesId")
+                        .HasColumnType("int");
 
-                    b.Navigation("User");
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ResourcesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("ResourceTag");
                 });
 
-            modelBuilder.Entity("Freepository.Models.ResourceTag", b =>
+            modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
-                    b.HasOne("Freepository.Models.Resource", "Resource")
-                        .WithMany("ResourceTags")
-                        .HasForeignKey("ResourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Freepository.Models.Tag", "Tag")
-                        .WithMany("ResourceTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resource");
-
-                    b.Navigation("Tag");
+                    b.HasOne("Freepository.Models.User", null)
+                        .WithMany("Resources")
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -376,14 +358,19 @@ namespace Freepository.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Freepository.Models.Resource", b =>
+            modelBuilder.Entity("ResourceTag", b =>
                 {
-                    b.Navigation("ResourceTags");
-                });
+                    b.HasOne("Freepository.Models.Resource", null)
+                        .WithMany()
+                        .HasForeignKey("ResourcesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Freepository.Models.Tag", b =>
-                {
-                    b.Navigation("ResourceTags");
+                    b.HasOne("Freepository.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Freepository.Models.User", b =>

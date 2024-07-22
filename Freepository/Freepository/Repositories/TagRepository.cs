@@ -17,6 +17,10 @@ public class TagRepository : ITagRepository
     {
         return await _context.Tags.ToListAsync();
     }
+    public async Task<List<Tag>> GetTagsByIds(IEnumerable<int> ids)
+    {
+        return await _context.Tags.Where(tag => ids.Contains(tag.Id)).ToListAsync();
+    }
 
     public async Task<Tag> GetTagById(int id)
     {

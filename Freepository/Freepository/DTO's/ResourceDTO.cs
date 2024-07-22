@@ -11,5 +11,5 @@ public class ResourceDTO
     public string UserId { get; set; }
     // public User User { get; set; }
     
-    // public ICollection<ResourceTag> ResourceTags { get; set; }
+    public ICollection<int> TagIds { get; set; }
 }

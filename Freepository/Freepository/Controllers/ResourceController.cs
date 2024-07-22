@@ -4,6 +4,7 @@ using Freepository.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Freepository.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Freepository.Controllers
 {
@@ -12,11 +13,13 @@ namespace Freepository.Controllers
     public class ResourceController : ControllerBase
     {
         private readonly IResourceRepository _resourceRepository;
+        private readonly ITagRepository _tagRepository;
         private readonly IMapper _mapper;
 
-        public ResourceController(IResourceRepository resourceRepository, IMapper mapper)
+        public ResourceController(IResourceRepository resourceRepository, ITagRepository tagRepository, IMapper mapper)
         {
             _resourceRepository = resourceRepository;
+            _tagRepository = tagRepository;
             _mapper = mapper;
         }
 
@@ -31,7 +34,16 @@ namespace Freepository.Controllers
         [HttpPost]
         public async Task<ActionResult<ResourceDTO>> AddResource(CreateResourceDTO createResourceDto)
         {
+            var tags = await _tagRepository.GetTagsByIds(createResourceDto.TagIds);
+
+            if (tags.Count != createResourceDto.TagIds.Count)
+            {
+                return BadRequest("Some tags do not exist");
+            }
+
             var resource = _mapper.Map<Resource>(createResourceDto);
+            resource.ResourceTags = tags.Select(tag => new ResourceTag { TagId = tag.Id }).ToList();
+
             await _resourceRepository.AddResource(resource);
 
             var resourceDto = _mapper.Map<ResourceDTO>(resource);
@@ -47,7 +59,14 @@ namespace Freepository.Controllers
                 return NotFound();
             }
 
+            var tags = await _tagRepository.GetTagsByIds(updateResourceDto.TagIds);
+            if (tags.Count != updateResourceDto.TagIds.Count)
+            {
+                return BadRequest("Some tags do not exist");
+            }
+
             _mapper.Map(updateResourceDto, existingResource);
+            existingResource.ResourceTags = tags.Select(tag => new ResourceTag { ResourceId = existingResource.Id, TagId = tag.Id }).ToList();
 
             await _resourceRepository.UpdateResource(existingResource);
             return NoContent();
