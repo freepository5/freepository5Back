@@ -2,6 +2,7 @@ using Freepository.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Freepository.Data;
 
 namespace Freepository.Repositories
@@ -9,10 +10,12 @@ namespace Freepository.Repositories
     public class ResourceRepository : IResourceRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ResourceRepository(ApplicationDbContext context)
+        public ResourceRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Resource>> GetAllResources()
@@ -51,6 +54,24 @@ namespace Freepository.Repositories
                 _context.Resources.Remove(resource);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> ExistResource(int id)
+        {
+            return await _context.Resources.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task AssignTag(int id, List<int> tagsIds)
+        {
+            var resource = await _context.Resources.Include(p => p.ResourceTags).FirstOrDefaultAsync(p => p.Id == id);
+            if (resource is null)
+            {
+                throw new AggregateException($"No existe el recurso con el id {id}");
+            }
+
+            var tagsResources = tagsIds.Select(tagsIds => new ResourceTag() { TagId = tagsIds });
+            resource.ResourceTags = _mapper.Map(tagsResources, resource.ResourceTags);
+            await _context.SaveChangesAsync();
         }
     }
 }

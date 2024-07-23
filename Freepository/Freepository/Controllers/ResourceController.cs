@@ -4,6 +4,7 @@ using Freepository.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Freepository.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Freepository.Controllers
@@ -50,6 +51,33 @@ namespace Freepository.Controllers
             var resourceDto = _mapper.Map<ResourceDTO>(resource);
             return CreatedAtAction(nameof(GetAllResources), new { id = resource.Id }, resourceDto);
         }
+        
+        [HttpPost("/{id:int}")]
+        public async Task<Results<NoContent, NotFound, BadRequest<string>>> AssignTag(int id, List<int> tagIds,
+            IResourceRepository resourceRepository, ITagRepository tagRepository)
+        {
+            if(!await resourceRepository.ExistResource(id))
+            {
+                return TypedResults.NotFound();
+            }
+
+            var tagsExists = new List<int>();
+
+            if (tagIds.Count != 0)
+            {
+                tagsExists = await tagRepository.ExistsTags(tagIds);
+            }
+
+            if (tagsExists.Count != tagIds.Count)
+            {
+                var tagsNotExists = tagIds.Except(tagsExists);
+                return TypedResults.BadRequest($"las etiquetas {string.Join(",", tagsNotExists)} no existen en la base de datos");
+            }
+        
+            await resourceRepository.AssignTag(id, tagsExists);
+            return TypedResults.NoContent();
+        }
+            
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateResource(int id, CreateResourceDTO updateResourceDto)

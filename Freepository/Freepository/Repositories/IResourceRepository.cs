@@ -9,4 +9,6 @@ public interface IResourceRepository
     Task AddResource(Resource resource);
     Task UpdateResource(Resource resource);
     Task DeleteResource(int id);
+    Task<bool> ExistResource(int id);
+    Task AssignTag(int id, List<int> tagsIds);
 }

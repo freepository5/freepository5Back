@@ -26,6 +26,11 @@ public class TagRepository : ITagRepository
     {
         return await _context.Tags.FindAsync(id);
     }
+    
+    public async Task<List<int>> ExistsTags(List<int> ids)
+    {
+        return await _context.Tags.Where(g=>ids.Contains(g.Id)).Select(g=>g.Id).ToListAsync();
+    }
     public async Task AddTag(Tag tag)
     {
         await _context.AddAsync(tag);
