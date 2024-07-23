@@ -43,6 +43,7 @@ namespace Freepository.Controllers
 
             var resource = _mapper.Map<Resource>(createResourceDto);
             resource.ResourceTags = tags.Select(tag => new ResourceTag { TagId = tag.Id }).ToList();
+            resource.UserId = createResourceDto.UserId; // Ensure UserId is set
 
             await _resourceRepository.AddResource(resource);
 
@@ -67,6 +68,7 @@ namespace Freepository.Controllers
 
             _mapper.Map(updateResourceDto, existingResource);
             existingResource.ResourceTags = tags.Select(tag => new ResourceTag { ResourceId = existingResource.Id, TagId = tag.Id }).ToList();
+            existingResource.UserId = updateResourceDto.UserId; // Ensure UserId is updated
 
             await _resourceRepository.UpdateResource(existingResource);
             return NoContent();
