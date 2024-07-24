@@ -4,6 +4,7 @@ using Freepository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240724124831_JWT")]
+    partial class JWT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,13 +182,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "89261e4a-fdc0-4322-9d40-cfda7246a390",
+                            Id = "01714d6a-1cca-4663-b6eb-839a07ff3b2c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ac378c80-9eb0-44dd-8a80-3191b1bd272f",
+                            Id = "b9065d6c-f729-4a44-9bcc-884345d9dd63",
                             Name = "User",
                             NormalizedName = "USER"
                         });
