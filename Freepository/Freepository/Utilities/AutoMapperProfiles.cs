@@ -12,7 +12,6 @@ public class AutoMapperProfiles : Profile
     {
         // CreateMap<ResourceDTO, Resource>().ReverseMap();
         CreateMap<CreateResourceDTO, Resource>();
-        CreateMap<UserDTO, User>();
         CreateMap<TagDTO, Tag>().ReverseMap();
         CreateMap<CreateTagDTO, Tag>();
         

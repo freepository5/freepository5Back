@@ -4,8 +4,9 @@ using Freepository.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Freepository.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Freepository.Controllers
 {
@@ -51,33 +52,32 @@ namespace Freepository.Controllers
             var resourceDto = _mapper.Map<ResourceDTO>(resource);
             return CreatedAtAction(nameof(GetAllResources), new { id = resource.Id }, resourceDto);
         }
-        
-        [HttpPost("/{id:int}")]
-        public async Task<Results<NoContent, NotFound, BadRequest<string>>> AssignTag(int id, List<int> tagIds,
-            IResourceRepository resourceRepository, ITagRepository tagRepository)
+
+        // Cambiado el método para usar [FromBody] en un modelo de solicitud
+        [HttpPost("{id}/assign")]
+        public async Task<IActionResult> AssignTag(int id, [FromBody] AssignTagRequest request)
         {
-            if(!await resourceRepository.ExistResource(id))
+            if (!await _resourceRepository.ExistResource(id))
             {
-                return TypedResults.NotFound();
+                return NotFound();
             }
 
             var tagsExists = new List<int>();
 
-            if (tagIds.Count != 0)
+            if (request.TagIds.Count != 0)
             {
-                tagsExists = await tagRepository.ExistsTags(tagIds);
+                tagsExists = await _tagRepository.ExistsTags(request.TagIds);
             }
 
-            if (tagsExists.Count != tagIds.Count)
+            if (tagsExists.Count != request.TagIds.Count)
             {
-                var tagsNotExists = tagIds.Except(tagsExists);
-                return TypedResults.BadRequest($"las etiquetas {string.Join(",", tagsNotExists)} no existen en la base de datos");
+                var tagsNotExists = request.TagIds.Except(tagsExists);
+                return BadRequest($"Las etiquetas {string.Join(",", tagsNotExists)} no existen en la base de datos");
             }
-        
-            await resourceRepository.AssignTag(id, tagsExists);
-            return TypedResults.NoContent();
+
+            await _resourceRepository.AssignTag(id, tagsExists);
+            return NoContent();
         }
-            
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateResource(int id, CreateResourceDTO updateResourceDto)
@@ -108,5 +108,11 @@ namespace Freepository.Controllers
             await _resourceRepository.DeleteResource(id);
             return NoContent();
         }
+    }
+
+    // Define el modelo de solicitud para AssignTag
+    public class AssignTagRequest
+    {
+        public List<int> TagIds { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Freepository.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,42 +8,52 @@ namespace Freepository.Data
     public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        { 
-       
+        {
+
         }
-                        public DbSet<Resource> Resources { get; set; }
-                        public DbSet<Tag> Tags { get; set; }
-                        public DbSet<ResourceTag> ResourceTags { get; set; }
-                        public DbSet<User> Users { get; set; } // Añadir el DbSet para User
 
-                        protected override void OnModelCreating(ModelBuilder modelBuilder)
-                        {
-                            base.OnModelCreating(modelBuilder);
+        public DbSet<Resource> Resources { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<ResourceTag> ResourceTags { get; set; }
 
-                            // Configurar clave compuesta para ResourceTag
-                            modelBuilder.Entity<ResourceTag>()
-                                .HasKey(rt => new { rt.ResourceId, rt.TagId });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-                            // Configurar relaciones para ResourceTag
-                            modelBuilder.Entity<ResourceTag>()
-                                .HasOne(rt => rt.Resource)
-                                .WithMany(r => r.ResourceTags)
-                                .HasForeignKey(rt => rt.ResourceId);
+            // Configurar clave compuesta para ResourceTag
+            modelBuilder.Entity<ResourceTag>()
+                .HasKey(rt => new { rt.ResourceId, rt.TagId });
 
-                            modelBuilder.Entity<ResourceTag>()
-                                .HasOne(rt => rt.Tag)
-                                .WithMany(t => t.ResourceTags)
-                                .HasForeignKey(rt => rt.TagId);
+            // Configurar relaciones para ResourceTag
+            modelBuilder.Entity<ResourceTag>()
+                .HasOne(rt => rt.Resource)
+                .WithMany(r => r.ResourceTags)
+                .HasForeignKey(rt => rt.ResourceId);
 
-                            // Configurar la relación entre Resource y User
-                            modelBuilder.Entity<Resource>()
-                                .HasOne(r => r.User)
-                                .WithMany(u => u.Resources)
-                                .HasForeignKey(r => r.UserId);
-                        }
-                        
-                        
- 
+            modelBuilder.Entity<ResourceTag>()
+                .HasOne(rt => rt.Tag)
+                .WithMany(t => t.ResourceTags)
+                .HasForeignKey(rt => rt.TagId);
+            // Configurar la relación entre Resource y User
+            // modelBuilder.Entity<Resource>()
+            //     .HasOne(r => r.User)
+            //     .WithMany(u => u.Resources)
+            //     .HasForeignKey(r => r.UserId);
+
+            List<IdentityRole> roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
+        }
     }
-    
 }

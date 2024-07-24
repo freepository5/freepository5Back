@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240719122541_Users")]
-    partial class Users
+    [Migration("20240724130219_FirstMigrationAfterFixes")]
+    partial class FirstMigrationAfterFixes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,17 +45,30 @@ namespace Freepository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Resources");
+                });
+
+            modelBuilder.Entity("Freepository.Models.ResourceTag", b =>
+                {
+                    b.Property<int>("ResourceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ResourceId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ResourceTags");
                 });
 
             modelBuilder.Entity("Freepository.Models.Tag", b =>
@@ -93,14 +106,6 @@ namespace Freepository.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -173,6 +178,20 @@ namespace Freepository.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "89261e4a-fdc0-4322-9d40-cfda7246a390",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "ac378c80-9eb0-44dd-8a80-3191b1bd272f",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -228,12 +247,10 @@ namespace Freepository.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -270,12 +287,10 @@ namespace Freepository.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -285,26 +300,34 @@ namespace Freepository.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ResourceTag", b =>
-                {
-                    b.Property<int>("ResourcesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ResourcesId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("ResourceTag");
-                });
-
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
-                    b.HasOne("Freepository.Models.User", null)
-                        .WithMany("Resources")
-                        .HasForeignKey("UserId1");
+                    b.HasOne("Freepository.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Freepository.Models.ResourceTag", b =>
+                {
+                    b.HasOne("Freepository.Models.Resource", "Resource")
+                        .WithMany("ResourceTags")
+                        .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Freepository.Models.Tag", "Tag")
+                        .WithMany("ResourceTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Resource");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -358,24 +381,14 @@ namespace Freepository.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ResourceTag", b =>
+            modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
-                    b.HasOne("Freepository.Models.Resource", null)
-                        .WithMany()
-                        .HasForeignKey("ResourcesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Freepository.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ResourceTags");
                 });
 
-            modelBuilder.Entity("Freepository.Models.User", b =>
+            modelBuilder.Entity("Freepository.Models.Tag", b =>
                 {
-                    b.Navigation("Resources");
+                    b.Navigation("ResourceTags");
                 });
 #pragma warning restore 612, 618
         }
