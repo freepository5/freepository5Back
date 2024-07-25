@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Freepository.Migrations
 {
     /// <inheritdoc />
-    public partial class JWT : Migration
+    public partial class TryCrud : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -222,8 +222,8 @@ namespace Freepository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "01714d6a-1cca-4663-b6eb-839a07ff3b2c", null, "Admin", "ADMIN" },
-                    { "b9065d6c-f729-4a44-9bcc-884345d9dd63", null, "User", "USER" }
+                    { "375cb358-3869-46a9-a0e8-3bb56fb0dc25", null, "User", "USER" },
+                    { "bfba3d14-f85a-433a-8859-1127e1b3ba83", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
