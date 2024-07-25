@@ -196,6 +196,7 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
+
                             Id = "503f95bb-decf-4e11-8b14-1e4bf794ae73",
                             Name = "Admin",
                             NormalizedName = "ADMIN"

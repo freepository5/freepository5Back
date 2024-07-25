@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240724130219_FirstMigrationAfterFixes")]
-    partial class FirstMigrationAfterFixes
+    [Migration("20240725072827_TryCrud")]
+    partial class TryCrud
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,13 +182,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "89261e4a-fdc0-4322-9d40-cfda7246a390",
+                            Id = "bfba3d14-f85a-433a-8859-1127e1b3ba83",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ac378c80-9eb0-44dd-8a80-3191b1bd272f",
+                            Id = "375cb358-3869-46a9-a0e8-3bb56fb0dc25",
                             Name = "User",
                             NormalizedName = "USER"
                         });
