@@ -18,6 +18,7 @@ namespace Freepository.Data
         public DbSet<Roadmap> Roadmaps { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Bootcamp> Bootcamps { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

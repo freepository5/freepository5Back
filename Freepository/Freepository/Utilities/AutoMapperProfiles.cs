@@ -24,5 +24,6 @@ public class AutoMapperProfiles : Profile
         CreateMap<ResourceTag, ResourceTagDTO>();
         CreateMap<Tag, TagDTO>();
         CreateMap<Course, CourseDTO>().ReverseMap();
+        CreateMap<Promotion, PromotionDTO>().ReverseMap();
     }
 }
