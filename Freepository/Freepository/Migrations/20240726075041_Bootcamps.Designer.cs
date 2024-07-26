@@ -4,6 +4,7 @@ using Freepository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240726075041_Bootcamps")]
+    partial class Bootcamps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,6 @@ namespace Freepository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Freepository.Models.Course", b =>
             modelBuilder.Entity("Freepository.Models.Bootcamp", b =>
                 {
                     b.Property<int>("Id")
@@ -37,7 +39,6 @@ namespace Freepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
                     b.ToTable("Bootcamps");
                 });
 
@@ -215,13 +216,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "abf0d425-a6b3-4c59-b230-009058db96b0",
+                            Id = "4f431ac1-8101-440c-81d4-0a949f4e9adc",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1e7e73f6-e366-4026-8655-ded1b3c5f445",
+                            Id = "ed690fce-a4da-4718-b281-7ef9d487637a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
