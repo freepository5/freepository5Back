@@ -4,6 +4,7 @@ using Freepository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240726092110_Course")]
+    partial class Course
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +26,6 @@ namespace Freepository.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Freepository.Models.Course", b =>
-            modelBuilder.Entity("Freepository.Models.Bootcamp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +40,6 @@ namespace Freepository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
-                    b.ToTable("Bootcamps");
                 });
 
             modelBuilder.Entity("Freepository.Models.Resource", b =>
@@ -215,13 +216,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "abf0d425-a6b3-4c59-b230-009058db96b0",
+                            Id = "f5134cb0-30b1-429b-ba08-3e24c7f78081",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1e7e73f6-e366-4026-8655-ded1b3c5f445",
+                            Id = "21be4e23-7063-4341-a3f5-4cc7897b177a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
