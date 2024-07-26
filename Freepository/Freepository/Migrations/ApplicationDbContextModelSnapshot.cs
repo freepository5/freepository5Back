@@ -39,7 +39,7 @@ namespace Freepository.Migrations
 
                     b.ToTable("Courses");
                     b.ToTable("Bootcamps");
-                });
+                }));
 
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
