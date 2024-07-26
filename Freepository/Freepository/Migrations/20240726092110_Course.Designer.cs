@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240725072827_TryCrud")]
-    partial class TryCrud
+    [Migration("20240726092110_Course")]
+    partial class Course
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace Freepository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Freepository.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
 
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
@@ -69,6 +86,23 @@ namespace Freepository.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ResourceTags");
+                });
+
+            modelBuilder.Entity("Freepository.Models.Roadmap", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roadmaps");
                 });
 
             modelBuilder.Entity("Freepository.Models.Tag", b =>
@@ -182,13 +216,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bfba3d14-f85a-433a-8859-1127e1b3ba83",
+                            Id = "f5134cb0-30b1-429b-ba08-3e24c7f78081",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "375cb358-3869-46a9-a0e8-3bb56fb0dc25",
+                            Id = "21be4e23-7063-4341-a3f5-4cc7897b177a",
                             Name = "User",
                             NormalizedName = "USER"
                         });

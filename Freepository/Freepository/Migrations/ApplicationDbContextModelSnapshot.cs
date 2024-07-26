@@ -22,6 +22,23 @@ namespace Freepository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Freepository.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
                     b.Property<int>("Id")
@@ -196,14 +213,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-
-                            Id = "503f95bb-decf-4e11-8b14-1e4bf794ae73",
+                            Id = "f5134cb0-30b1-429b-ba08-3e24c7f78081",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4b62aebd-1b4c-4078-a326-bf9823a3c2e6",
+                            Id = "21be4e23-7063-4341-a3f5-4cc7897b177a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
