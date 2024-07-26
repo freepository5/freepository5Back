@@ -22,6 +22,23 @@ namespace Freepository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Freepository.Models.Bootcamp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bootcamps");
+                });
+
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
                     b.Property<int>("Id")
@@ -196,14 +213,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-
-                            Id = "503f95bb-decf-4e11-8b14-1e4bf794ae73",
+                            Id = "abf0d425-a6b3-4c59-b230-009058db96b0",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4b62aebd-1b4c-4078-a326-bf9823a3c2e6",
+                            Id = "1e7e73f6-e366-4026-8655-ded1b3c5f445",
                             Name = "User",
                             NormalizedName = "USER"
                         });
