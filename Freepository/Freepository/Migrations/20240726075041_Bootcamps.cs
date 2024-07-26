@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Freepository.Migrations
 {
     /// <inheritdoc />
-    public partial class TryCrud : Migration
+    public partial class Bootcamps : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,32 @@ namespace Freepository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bootcamps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bootcamps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roadmaps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roadmaps", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,8 +248,8 @@ namespace Freepository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "375cb358-3869-46a9-a0e8-3bb56fb0dc25", null, "User", "USER" },
-                    { "bfba3d14-f85a-433a-8859-1127e1b3ba83", null, "Admin", "ADMIN" }
+                    { "4f431ac1-8101-440c-81d4-0a949f4e9adc", null, "Admin", "ADMIN" },
+                    { "ed690fce-a4da-4718-b281-7ef9d487637a", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -295,7 +321,13 @@ namespace Freepository.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bootcamps");
+
+            migrationBuilder.DropTable(
                 name: "ResourceTags");
+
+            migrationBuilder.DropTable(
+                name: "Roadmaps");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

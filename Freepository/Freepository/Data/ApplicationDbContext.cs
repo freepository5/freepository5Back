@@ -16,6 +16,7 @@ namespace Freepository.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ResourceTag> ResourceTags { get; set; }
         public DbSet<Roadmap> Roadmaps { get; set; }
+        public DbSet<Bootcamp> Bootcamps { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
