@@ -1,10 +1,12 @@
-﻿using Freepository.Models;
+﻿using Freepository.DTO_s;
+using System.Threading.Tasks;
 
-namespace Freepository.Repositories;
-
-public interface IRoadmapRepository
+namespace Freepository.Repositories
 {
-    Task<Roadmap> AddRoadmap(Roadmap roadmap);
-    Task<Roadmap> GetRoadmapById(int id);
-    Task<bool> DeleteRoadmap(int id);
+    public interface IRoadmapRepository
+    {
+        Task<RoadmapDTO> AddRoadmap(RoadmapDTO roadmapDto);
+        Task<RoadmapDTO> GetRoadmapById(int id);
+        Task<bool> DeleteRoadmap(int id);
+    }
 }

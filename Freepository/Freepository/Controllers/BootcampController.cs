@@ -1,7 +1,9 @@
-using Freepository.Models;
+using AutoMapper;
+using Freepository.DTO_s;
 using Freepository.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Freepository.Controllers
 {
@@ -10,21 +12,23 @@ namespace Freepository.Controllers
     public class BootcampController : ControllerBase
     {
         private readonly IBootcampRepository _repository;
+        private readonly IMapper _mapper;
 
-        public BootcampController(IBootcampRepository repository)
+        public BootcampController(IBootcampRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bootcamp>>> GetAllBootcamps()
+        public async Task<ActionResult<IEnumerable<BootcampDTO>>> GetAllBootcamps()
         {
             var bootcamps = await _repository.GetAllBootcamps();
             return Ok(bootcamps);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bootcamp>> GetBootcampById(int id)
+        public async Task<ActionResult<BootcampDTO>> GetBootcampById(int id)
         {
             var bootcamp = await _repository.GetBootcampById(id);
             if (bootcamp == null)
@@ -36,10 +40,12 @@ namespace Freepository.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Bootcamp>> AddBootcamp(Bootcamp bootcamp)
+        public async Task<ActionResult<BootcampDTO>> AddBootcamp(BootcampDTO bootcampDto)
         {
-            var createdBootcamp = await _repository.AddBootcamp(bootcamp);
-            return CreatedAtAction(nameof(GetBootcampById), new { id = createdBootcamp.Id }, createdBootcamp);
+            var createdBootcamp = await _repository.AddBootcamp(bootcampDto);
+            var createdBootcampDto = _mapper.Map<BootcampDTO>(createdBootcamp);
+
+            return CreatedAtAction(nameof(GetBootcampById), new { id = createdBootcamp.Id }, createdBootcampDto);
         }
 
         [HttpDelete("{id}")]
