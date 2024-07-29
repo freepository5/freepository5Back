@@ -13,6 +13,7 @@ public class AccountController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
     private readonly SignInManager<User> _signInManager;
+
     public AccountController(UserManager<User> userManager, ITokenService tokenService, SignInManager<User> signInManager)
     {
         _userManager = userManager;
@@ -49,11 +50,19 @@ public class AccountController : ControllerBase
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            // Validar que el correo electrónico termina en @factoriaf5.org
+            if (!registerDto.Email.EndsWith("@factoriaf5.org", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("El correo electrónico debe terminar en @factoriaf5.org");
+            }
+
             var appUser = new User
             {
                 UserName = registerDto.UserName,
                 Email = registerDto.Email
             };
+
             var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
             if (createdUser.Succeeded)
             {
