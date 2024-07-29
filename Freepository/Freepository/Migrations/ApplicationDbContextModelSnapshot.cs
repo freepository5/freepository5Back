@@ -247,13 +247,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7d26a00f-4ac7-4a1f-8ffa-2e33c4b31109",
+                            Id = "c4b97246-d63f-49dd-a287-9c3f9cef4c79",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d2619485-96a9-4637-87f5-b46ba57beac0",
+                            Id = "0b6b7bea-9528-4444-9f2a-8f74b8ee07da",
                             Name = "User",
                             NormalizedName = "USER"
                         });

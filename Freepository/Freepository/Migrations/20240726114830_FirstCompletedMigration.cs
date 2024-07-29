@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Freepository.Migrations
 {
     /// <inheritdoc />
-    public partial class Course : Migration
+    public partial class FirstCompletedMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,6 +53,19 @@ namespace Freepository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bootcamps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bootcamps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
                 {
@@ -63,6 +76,19 @@ namespace Freepository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Promotions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Promotions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,8 +274,8 @@ namespace Freepository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "21be4e23-7063-4341-a3f5-4cc7897b177a", null, "User", "USER" },
-                    { "f5134cb0-30b1-429b-ba08-3e24c7f78081", null, "Admin", "ADMIN" }
+                    { "0b6b7bea-9528-4444-9f2a-8f74b8ee07da", null, "User", "USER" },
+                    { "c4b97246-d63f-49dd-a287-9c3f9cef4c79", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -321,7 +347,13 @@ namespace Freepository.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bootcamps");
+
+            migrationBuilder.DropTable(
                 name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "ResourceTags");

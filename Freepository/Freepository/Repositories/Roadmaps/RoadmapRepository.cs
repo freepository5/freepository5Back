@@ -1,39 +1,48 @@
-﻿using Freepository.Data;
+﻿using AutoMapper;
+using Freepository.Data;
 using Freepository.Models;
+using Freepository.DTO_s;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
-namespace Freepository.Repositories;
-
-public class RoadmapRepository : IRoadmapRepository
+namespace Freepository.Repositories
 {
-    private readonly ApplicationDbContext _context;
-
-    public RoadmapRepository(ApplicationDbContext context)
+    public class RoadmapRepository : IRoadmapRepository
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-    public async Task<Roadmap> AddRoadmap(Roadmap roadmap)
-    {
-        _context.Roadmaps.Add(roadmap);
-        await _context.SaveChangesAsync();
-        return roadmap;
-    }
-
-    public async Task<Roadmap> GetRoadmapById(int id)
-    {
-        return await _context.Roadmaps.FindAsync(id);
-    }
-
-    public async Task<bool> DeleteRoadmap(int id)
-    {
-        var roadmap = await _context.Roadmaps.FindAsync(id);
-        if (roadmap == null)
+        public RoadmapRepository(ApplicationDbContext context, IMapper mapper)
         {
-            return false;
+            _context = context;
+            _mapper = mapper;
         }
 
-        _context.Roadmaps.Remove(roadmap);
-        await _context.SaveChangesAsync();
-        return true;
+        public async Task<RoadmapDTO> AddRoadmap(RoadmapDTO roadmapDto)
+        {
+            var roadmap = _mapper.Map<Roadmap>(roadmapDto);
+            _context.Roadmaps.Add(roadmap);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<RoadmapDTO>(roadmap);
+        }
+
+        public async Task<RoadmapDTO> GetRoadmapById(int id)
+        {
+            var roadmap = await _context.Roadmaps.FindAsync(id);
+            return _mapper.Map<RoadmapDTO>(roadmap);
+        }
+
+        public async Task<bool> DeleteRoadmap(int id)
+        {
+            var roadmap = await _context.Roadmaps.FindAsync(id);
+            if (roadmap == null)
+            {
+                return false;
+            }
+
+            _context.Roadmaps.Remove(roadmap);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

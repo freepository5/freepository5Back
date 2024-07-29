@@ -1,45 +1,54 @@
-﻿using Freepository.Data;
+﻿using AutoMapper;
+using Freepository.Data;
 using Freepository.Models;
+using Freepository.DTO_s;
 using Microsoft.EntityFrameworkCore;
 
-namespace Freepository.Repositories;
-
-public class BootcampRepository : IBootcampRepository
+namespace Freepository.Repositories
 {
-    private readonly ApplicationDbContext _context;
-
-    public BootcampRepository(ApplicationDbContext context)
+    public class BootcampRepository : IBootcampRepository
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-    public async Task<IEnumerable<Bootcamp>> GetAllBootcamps()
-    {
-        return await _context.Bootcamps.ToListAsync();
-    }
-
-    public async Task<Bootcamp> GetBootcampById(int id)
-    {
-        return await _context.Bootcamps.FindAsync(id);
-    }
-
-    public async Task<Bootcamp> AddBootcamp(Bootcamp bootcamp)
-    {
-        _context.Bootcamps.Add(bootcamp);
-        await _context.SaveChangesAsync();
-        return bootcamp;
-    }
-
-    public async Task<bool> DeleteBootcamp(int id)
-    {
-        var bootcamp = await _context.Bootcamps.FindAsync(id);
-        if (bootcamp == null)
+        public BootcampRepository(ApplicationDbContext context, IMapper mapper)
         {
-            return false;
+            _context = context;
+            _mapper = mapper;
         }
 
-        _context.Bootcamps.Remove(bootcamp);
-        await _context.SaveChangesAsync();
-        return true;
+        public async Task<IEnumerable<BootcampDTO>> GetAllBootcamps()
+        {
+            var bootcamps = await _context.Bootcamps.ToListAsync();
+            return _mapper.Map<IEnumerable<BootcampDTO>>(bootcamps);
+        }
+
+        public async Task<BootcampDTO> GetBootcampById(int id)
+        {
+            var bootcamp = await _context.Bootcamps.FindAsync(id);
+            return _mapper.Map<BootcampDTO>(bootcamp);
+        }
+        
+        public async Task<Bootcamp> AddBootcamp(BootcampDTO bootcampDto)
+        {
+            var bootcamp = _mapper.Map<Bootcamp>(bootcampDto);
+            _context.Bootcamps.Add(bootcamp);
+            await _context.SaveChangesAsync();
+            return bootcamp;
+        }
+
+
+        public async Task<bool> DeleteBootcamp(int id)
+        {
+            var bootcamp = await _context.Bootcamps.FindAsync(id);
+            if (bootcamp == null)
+            {
+                return false;
+            }
+
+            _context.Bootcamps.Remove(bootcamp);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
