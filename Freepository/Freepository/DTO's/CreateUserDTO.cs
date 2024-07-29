@@ -1,0 +1,8 @@
+﻿namespace Freepository.DTO_s;
+
+public class CreateUserDTO
+{
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string Token { get; set; }
+}
