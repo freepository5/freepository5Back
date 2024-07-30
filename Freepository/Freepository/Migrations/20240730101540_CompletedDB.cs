@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Freepository.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstCompletedMigration : Migration
+    public partial class CompletedDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,6 +76,19 @@ namespace Freepository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Modules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Modules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,7 +245,8 @@ namespace Freepository.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ModuleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,6 +255,12 @@ namespace Freepository.Migrations
                         name: "FK_Resources_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Resources_Modules_ModuleId",
+                        column: x => x.ModuleId,
+                        principalTable: "Modules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -274,8 +294,8 @@ namespace Freepository.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0b6b7bea-9528-4444-9f2a-8f74b8ee07da", null, "User", "USER" },
-                    { "c4b97246-d63f-49dd-a287-9c3f9cef4c79", null, "Admin", "ADMIN" }
+                    { "1332659c-08fd-431a-ac55-362b5c8a7844", null, "Admin", "ADMIN" },
+                    { "5a32bf5c-f980-408a-a0de-4eb8c03b668c", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -316,6 +336,11 @@ namespace Freepository.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Resources_ModuleId",
+                table: "Resources",
+                column: "ModuleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resources_UserId",
@@ -372,6 +397,9 @@ namespace Freepository.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Modules");
         }
     }
 }

@@ -13,5 +13,8 @@ public class Resource
     public string Url { get; set; }
     public string UserId { get; set; }
     public User User { get; set; }
+
+    public int ModuleId { get; set; }
+    public Module Module { get; set; }
     public ICollection<ResourceTag> ResourceTags { get; set; } = new List<ResourceTag>();
 }

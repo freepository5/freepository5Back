@@ -19,6 +19,7 @@ namespace Freepository.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Bootcamp> Bootcamps { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<Module> Modules { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,6 +45,11 @@ namespace Freepository.Data
             //     .HasOne(r => r.User)
             //     .WithMany(u => u.Resources)
             //     .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<Resource>()
+                .HasOne(r => r.Module)
+                .WithMany(m => m.Resources)
+                .HasForeignKey(r => r.ModuleId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
