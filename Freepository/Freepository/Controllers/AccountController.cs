@@ -41,7 +41,9 @@ public class AccountController : ControllerBase
             return Unauthorized("Username not found or password incorrect");
         
         return Ok(new CreateUserDTO
-        {  
+            
+        {   
+            Id = user.Id,
             UserName = user.UserName,
             Email = user.Email,
             Token = _tokenService.CreateToken(user)
