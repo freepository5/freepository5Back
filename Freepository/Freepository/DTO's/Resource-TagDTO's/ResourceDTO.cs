@@ -10,6 +10,7 @@ public class ResourceDTO
     public string Url { get; set; }
     public string UserId { get; set; }
     // public User User { get; set; }
+    public int ModuleId { get; set; }
     
     public ICollection<int> TagIds { get; set; }
 }

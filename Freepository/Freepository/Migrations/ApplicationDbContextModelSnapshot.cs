@@ -56,6 +56,23 @@ namespace Freepository.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("Freepository.Models.Module", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Modules");
+                });
+
             modelBuilder.Entity("Freepository.Models.Promotion", b =>
                 {
                     b.Property<int>("Id")
@@ -85,6 +102,9 @@ namespace Freepository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +118,8 @@ namespace Freepository.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ModuleId");
 
                     b.HasIndex("UserId");
 
@@ -247,13 +269,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c4b97246-d63f-49dd-a287-9c3f9cef4c79",
+                            Id = "1332659c-08fd-431a-ac55-362b5c8a7844",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0b6b7bea-9528-4444-9f2a-8f74b8ee07da",
+                            Id = "5a32bf5c-f980-408a-a0de-4eb8c03b668c",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -367,11 +389,19 @@ namespace Freepository.Migrations
 
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
+                    b.HasOne("Freepository.Models.Module", "Module")
+                        .WithMany("Resources")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Freepository.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Module");
 
                     b.Navigation("User");
                 });
@@ -444,6 +474,11 @@ namespace Freepository.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Freepository.Models.Module", b =>
+                {
+                    b.Navigation("Resources");
                 });
 
             modelBuilder.Entity("Freepository.Models.Resource", b =>

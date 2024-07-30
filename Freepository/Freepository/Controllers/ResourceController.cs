@@ -40,12 +40,12 @@ namespace Freepository.Controllers
 
             if (tags.Count != createResourceDto.TagIds.Count)
             {
-                return BadRequest("Some tags do not exist");
+                return BadRequest("Etiqueta no encontrada.");
             }
 
             var resource = _mapper.Map<Resource>(createResourceDto);
             resource.ResourceTags = tags.Select(tag => new ResourceTag { TagId = tag.Id }).ToList();
-            resource.UserId = createResourceDto.UserId; // Ensure UserId is set
+            resource.UserId = createResourceDto.UserId;
 
             await _resourceRepository.AddResource(resource);
 
@@ -53,7 +53,7 @@ namespace Freepository.Controllers
             return CreatedAtAction(nameof(GetAllResources), new { id = resource.Id }, resourceDto);
         }
 
-        // Cambiado el método para usar [FromBody] en un modelo de solicitud
+        
         [HttpPost("{id}/assign")]
         public async Task<IActionResult> AssignTag(int id, [FromBody] AssignTagRequest request)
         {
@@ -91,12 +91,12 @@ namespace Freepository.Controllers
             var tags = await _tagRepository.GetTagsByIds(updateResourceDto.TagIds);
             if (tags.Count != updateResourceDto.TagIds.Count)
             {
-                return BadRequest("Some tags do not exist");
+                return BadRequest("Etiqueta no encontrada.");
             }
 
             _mapper.Map(updateResourceDto, existingResource);
             existingResource.ResourceTags = tags.Select(tag => new ResourceTag { ResourceId = existingResource.Id, TagId = tag.Id }).ToList();
-            existingResource.UserId = updateResourceDto.UserId; // Ensure UserId is updated
+            existingResource.UserId = updateResourceDto.UserId;
 
             await _resourceRepository.UpdateResource(existingResource);
             return NoContent();
@@ -108,13 +108,17 @@ namespace Freepository.Controllers
             await _resourceRepository.DeleteResource(id);
             return NoContent();
         }
+        
+        [HttpGet("{id}/resources")]
+        public async Task<ActionResult<IEnumerable<ResourceDTO>>> GetResourcesByModuleId(int id)
+        {
+            var resources = await _resourceRepository.GetResourcesByModuleId(id);
+            return Ok(resources);
+        }
     }
-
-    // Define el modelo de solicitud para AssignTag
+    
     public class AssignTagRequest
     {
         public List<int> TagIds { get; set; }
     }
-   
-       
 }
