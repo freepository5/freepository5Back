@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Freepository.Models;
+using Freepository.Repositories.Promotions;
 using Freepository.Services;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -71,8 +73,7 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IRoadmapRepository, RoadmapRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IBootcampRepository, BootcampRepository>();
-
-// Configurar AutoMapper
+builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Configurar JSON y controladores

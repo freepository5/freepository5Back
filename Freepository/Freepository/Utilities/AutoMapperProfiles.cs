@@ -10,7 +10,6 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
-        // CreateMap<ResourceDTO, Resource>().ReverseMap();
         CreateMap<CreateResourceDTO, Resource>();
         CreateMap<TagDTO, Tag>().ReverseMap();
         CreateMap<CreateTagDTO, Tag>();
@@ -24,5 +23,8 @@ public class AutoMapperProfiles : Profile
         CreateMap<ResourceTag, ResourceTagDTO>();
         CreateMap<Tag, TagDTO>();
         CreateMap<Course, CourseDTO>().ReverseMap();
+        CreateMap<Promotion, PromotionDTO>().ReverseMap();
+        CreateMap<Bootcamp, BootcampDTO>().ReverseMap();
+        CreateMap<Roadmap, RoadmapDTO>().ReverseMap();
     }
 }

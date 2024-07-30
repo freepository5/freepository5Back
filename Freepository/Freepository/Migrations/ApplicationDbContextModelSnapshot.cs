@@ -22,7 +22,6 @@ namespace Freepository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Freepository.Models.Course", b =>
             modelBuilder.Entity("Freepository.Models.Bootcamp", b =>
                 {
                     b.Property<int>("Id")
@@ -37,9 +36,42 @@ namespace Freepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
                     b.ToTable("Bootcamps");
-                }));
+                });
+
+            modelBuilder.Entity("Freepository.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Freepository.Models.Promotion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promotions");
+                });
 
             modelBuilder.Entity("Freepository.Models.Resource", b =>
                 {
@@ -215,13 +247,13 @@ namespace Freepository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "abf0d425-a6b3-4c59-b230-009058db96b0",
+                            Id = "c4b97246-d63f-49dd-a287-9c3f9cef4c79",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1e7e73f6-e366-4026-8655-ded1b3c5f445",
+                            Id = "0b6b7bea-9528-4444-9f2a-8f74b8ee07da",
                             Name = "User",
                             NormalizedName = "USER"
                         });
