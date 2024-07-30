@@ -2,6 +2,7 @@ using AutoMapper;
 using Freepository.DTO_s;
 using Freepository.Models;
 using Freepository.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [EnableCors("AllowSpecificOrigins")]
     public class CourseController : ControllerBase
     {
         private readonly ICourseRepository _courseRepository;

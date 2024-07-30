@@ -7,11 +7,13 @@ using Freepository.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [EnableCors("AllowSpecificOrigins")]
     public class ResourceController : ControllerBase
     {
         private readonly IResourceRepository _resourceRepository;
