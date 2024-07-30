@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Freepository.Data;
+using Freepository.DTO_s;
 
 namespace Freepository.Repositories
 {
@@ -72,6 +73,15 @@ namespace Freepository.Repositories
             var tagsResources = tagsIds.Select(tagsIds => new ResourceTag() { TagId = tagsIds });
             resource.ResourceTags = _mapper.Map(tagsResources, resource.ResourceTags);
             await _context.SaveChangesAsync();
+        }
+        
+        public async Task<IEnumerable<ResourceDTO>> GetResourcesByModuleId(int moduleId)
+        {
+            var resources = await _context.Resources
+                .Where(r => r.ModuleId == moduleId)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<ResourceDTO>>(resources);
         }
     }
 }

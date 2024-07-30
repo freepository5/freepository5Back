@@ -13,6 +13,8 @@ public class CreateResourceDTO
     [Required]
     public string UserId { get; set; }
     // public List<TagDTO> Tags { get; set; } = [];
+    [Required]
+    public int ModuleId { get; set; }
 
     public ICollection<int> TagIds { get; set; }
 }
