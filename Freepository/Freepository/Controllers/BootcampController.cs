@@ -4,11 +4,13 @@ using Freepository.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigins")]
     public class BootcampController : ControllerBase
     {
         private readonly IBootcampRepository _repository;

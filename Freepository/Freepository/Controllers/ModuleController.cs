@@ -1,6 +1,7 @@
 using AutoMapper;
 using Freepository.DTO_s;
 using Freepository.Repositories.Modules;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class ModuleController : ControllerBase
     {
         private readonly IModuleRepository _moduleRepository;

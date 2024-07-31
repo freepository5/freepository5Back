@@ -7,11 +7,13 @@ using Freepository.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 
 namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [EnableCors("AllowSpecificOrigins")]
     public class ResourceController : ControllerBase
     {
         private readonly IResourceRepository _resourceRepository;
@@ -53,8 +55,8 @@ namespace Freepository.Controllers
             return CreatedAtAction(nameof(GetAllResources), new { id = resource.Id }, resourceDto);
         }
 
-        
-        [HttpPost("{id}/assign")]
+
+        [HttpPost("{id}")]
         public async Task<IActionResult> AssignTag(int id, [FromBody] AssignTagRequest request)
         {
             if (!await _resourceRepository.ExistResource(id))
@@ -95,7 +97,8 @@ namespace Freepository.Controllers
             }
 
             _mapper.Map(updateResourceDto, existingResource);
-            existingResource.ResourceTags = tags.Select(tag => new ResourceTag { ResourceId = existingResource.Id, TagId = tag.Id }).ToList();
+            existingResource.ResourceTags = tags
+                .Select(tag => new ResourceTag { ResourceId = existingResource.Id, TagId = tag.Id }).ToList();
             existingResource.UserId = updateResourceDto.UserId;
 
             await _resourceRepository.UpdateResource(existingResource);
@@ -108,15 +111,33 @@ namespace Freepository.Controllers
             await _resourceRepository.DeleteResource(id);
             return NoContent();
         }
-        
-        [HttpGet("{id}/resources")]
-        public async Task<ActionResult<IEnumerable<ResourceDTO>>> GetResourcesByModuleId(int id)
+
+        [HttpGet("{id?}")]
+        public async Task<ActionResult<IEnumerable<ResourceDTO>>> GetResources(int? id)
         {
-            var resources = await _resourceRepository.GetResourcesByModuleId(id);
-            return Ok(resources);
+            if (id.HasValue)
+            {
+                // Obtener un recurso específico por ID
+                var resource = await _resourceRepository.GetResourceById(id.Value);
+
+                if (resource == null)
+                {
+                    return NotFound();
+                }
+
+                var resourceDto = _mapper.Map<ResourceDTO>(resource);
+                return Ok(resourceDto);
+            }
+            else
+            {
+                // Obtener todos los recursos
+                var resources = await _resourceRepository.GetAllResources();
+                var resourcesDto = _mapper.Map<IEnumerable<ResourceDTO>>(resources);
+                return Ok(resourcesDto);
+            }
         }
     }
-    
+
     public class AssignTagRequest
     {
         public List<int> TagIds { get; set; }

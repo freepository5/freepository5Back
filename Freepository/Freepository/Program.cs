@@ -27,10 +27,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configurar CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", builder => builder
-        .WithOrigins("http://localhost:4200")
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+    options.AddPolicy("Allowlocalhost4200", policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        // .AllowCredentials();
+    });
 });
 
 builder.Services.AddControllers();
@@ -127,10 +130,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors("CorsPolicy");
+app.UseCors("Allowlocalhost4200");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 // Middleware para registrar solicitudes y respuestas
 app.Use(async (context, next) =>

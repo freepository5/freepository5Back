@@ -2,6 +2,7 @@ using AutoMapper;
 using Freepository.DTO_s;
 using Freepository.Models;
 using Freepository.Repositories.Promotions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class PromotionController : ControllerBase
     {
         private readonly IPromotionRepository _promotionRepository;

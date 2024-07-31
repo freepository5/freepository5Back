@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.Extensions.Logging;
 
 namespace Freepository.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigins")]
     public class RoadmapController : ControllerBase
     {
         private readonly IRoadmapRepository _roadmapRepository;

@@ -1,12 +1,14 @@
 using Freepository.DTO_s;
 using Freepository.Models;
 using Freepository.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Freepository.Controllers;
 [Route("api/account")]
 [ApiController]
+
 
 public class AccountController : ControllerBase
 {
@@ -28,6 +30,9 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState);
         
         var user = await _userManager.FindByNameAsync(loginDto.UserName.ToLower());
+        // var userId = await _userManager.GetUserIdAsync(user);
+        // var userClaims = await _userManager.GetClaimsAsync(user);
+        // var userId = await _userManager.GetUserId(userClaims[0]);
         if (user == null)
             return Unauthorized("Invalid Username!");
         
@@ -36,7 +41,9 @@ public class AccountController : ControllerBase
             return Unauthorized("Username not found or password incorrect");
         
         return Ok(new CreateUserDTO
-        {  
+            
+        {   
+            Id = user.Id,
             UserName = user.UserName,
             Email = user.Email,
             Token = _tokenService.CreateToken(user)
@@ -72,6 +79,7 @@ public class AccountController : ControllerBase
                     return Ok(
                         new CreateUserDTO()
                         {
+                            Id = appUser.Id,
                             UserName = appUser.UserName,
                             Email = appUser.Email,
                             Token = _tokenService.CreateToken(appUser)
